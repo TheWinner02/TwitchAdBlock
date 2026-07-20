@@ -65,17 +65,6 @@ jobs:
           curl -Lo "${{ github.workspace }}/App.ipa" "${{ inputs.ipa_url }}"
           zip -T "${{ github.workspace }}/App.ipa"
 
-      - name: Download STS IPA
-        if: ${{ inputs.create_release }}
-        run: |
-          curl -Lo "${{ github.workspace }}/STS.ipa" "https://nextcloud.level3tjg.me/s/b2WcDdDMN3ZXkYf/download/tv.twitch_19.4.ipa"
-          zip -T "${{ github.workspace }}/STS.ipa"
-
-      - name: Download LTS IPA
-        if: ${{ inputs.create_release }}
-        run: |
-          curl -Lo "${{ github.workspace }}/LTS.ipa" "https://nextcloud.level3tjg.me/s/QEyiJD3FK6AfxTA/download/tv.twitch_12.8.1.ipa"
-          zip -T "${{ github.workspace }}/LTS.ipa"
 
       - name: Get IPA Info
         if: ${{ inputs.create_release }}
@@ -127,25 +116,6 @@ jobs:
           IPA: ${{ github.workspace }}/App.ipa
           APP_VERSION: ${{ steps.ipa_info.outputs.version }}
 
-      - name: Build STS IPA
-        if: ${{ inputs.create_release }}
-        run: make package
-        env:
-          FINALPACKAGE: 1
-          SIDELOADED: 1
-          IPA: ${{ github.workspace }}/STS.ipa
-          APP_VERSION: "19.4"
-          STS: 1
-
-      - name: Build LTS IPA
-        if: ${{ inputs.create_release }}
-        run: make package
-        env:
-          FINALPACKAGE: 1
-          SIDELOADED: 1
-          IPA: ${{ github.workspace }}/LTS.ipa
-          APP_VERSION: "12.8.1"
-          LTS: 1
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
